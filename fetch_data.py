@@ -23,7 +23,7 @@ def main():
     season_frames = []
     for season in SEASONS:
         season_frames.append(fetch_season(season))
-        time.sleep(1)  # be polite to the API between calls
+        time.sleep(1)  # avoid sending requests too fast and getting rate-limited
 
     all_games = pd.concat(season_frames, ignore_index=True)
     print(f"Total rows: {len(all_games)}")
