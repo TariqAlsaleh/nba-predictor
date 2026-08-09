@@ -21,6 +21,11 @@ def build_features(team_games: pd.DataFrame) -> pd.DataFrame:
         .transform(lambda scores: scores.shift(1).rolling(5).mean())
     )
 
+    team_games["HEAD_TO_HEAD_WIN_RATE"] = (
+        team_games.groupby(["TEAM", "OPPONENT"])["WIN"]
+        .transform(lambda scores: scores.shift(1).expanding().mean())
+    )
+
     return team_games
 
 
