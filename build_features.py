@@ -1,7 +1,11 @@
 import pandas as pd
 
-
 def build_features(team_games: pd.DataFrame) -> pd.DataFrame:
+
+    team_games["GAME_DATE"] = pd.to_datetime(team_games["GAME_DATE"])
+    team_games["REST_DAYS"] = team_games.groupby("TEAM")["GAME_DATE"].diff().dt.days
+    team_games["REST_DAYS"] = team_games["REST_DAYS"].clip(upper=7)
+
     team_games["RECENT_AVG_PTS"] = (
         team_games.groupby("TEAM")["PTS_FOR"]
         .transform(lambda scores: scores.shift(1).rolling(5).mean())
